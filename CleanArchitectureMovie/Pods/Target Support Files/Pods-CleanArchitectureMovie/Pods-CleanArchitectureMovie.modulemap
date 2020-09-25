@@ -1,0 +1,6 @@
+framework module Pods_CleanArchitectureMovie {
+  umbrella header "Pods-CleanArchitectureMovie-umbrella.h"
+
+  export *
+  module * { export * }
+}
