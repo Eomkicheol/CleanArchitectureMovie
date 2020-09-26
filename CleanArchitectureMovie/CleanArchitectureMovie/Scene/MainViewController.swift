@@ -15,7 +15,7 @@ protocol MainDisplayLogic: class {
 class MainViewController: BaseViewController, MainDisplayLogic {
 
 	// MARK: - Properties
-	
+
 	var viewModel: Models.FetchMovieList.ViewModel? {
 		didSet {
 			self.updateUI()
@@ -35,7 +35,7 @@ class MainViewController: BaseViewController, MainDisplayLogic {
 		$0.searchBarStyle = .prominent
 		$0.autocorrectionType = .no
 		$0.autocapitalizationType = .none
-
+		$0.delegate = self
 	}
 
 	lazy var collectView = UICollectionView(frame: .zero, collectionViewLayout: self.flowLayout).then {
@@ -44,6 +44,8 @@ class MainViewController: BaseViewController, MainDisplayLogic {
 		$0.backgroundColor = .clear
 		$0.scrollIndicatorInsets = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
 		$0.keyboardDismissMode = .onDrag
+		$0.delegate = self
+		$0.dataSource = self
 
 		//cell
 		$0.register(MainMoviceCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
@@ -83,6 +85,7 @@ class MainViewController: BaseViewController, MainDisplayLogic {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		self.view.backgroundColor = .white
 	}
 
 	override func configureUI() {
