@@ -1,25 +1,25 @@
 //
-//  HomeWorker.swift
-//  Movie
+//  MainWorker.swift
+//  CleanArchitectureMovie
 //
-//  Created by 엄기철 on 2020/09/18.
+//  Created by 엄기철 on 2020/09/26.
 //  Copyright © 2020 ___ORGANIZATIONNAME___. All rights reserved.
 //
 
 import UIKit
 
+import RxCocoa
 import RxSwift
-import Moya
 
-protocol HomeWorkerNetworking {
-	func search(request: HomeModels.FetchFromRemoteDataStore.Request, compleation: @escaping (MovieItem) -> Void)
+protocol MainWorkerNetworking {
+	func search(request: MainModels.FetchMovieList.Request, compleation: @escaping (MovieItem) -> Void)
 }
 
-class HomeWorker: HomeWorkerNetworking {
+class MainWorker: MainWorkerNetworking {
 
 	// MARK: - Properties
 
-	typealias Models = HomeModels
+	typealias Models = MainModels
 
 	let disposeBag = DisposeBag()
 
@@ -31,7 +31,7 @@ class HomeWorker: HomeWorkerNetworking {
 
 	// MARK: - Methods
 
-	func search(request: HomeModels.FetchFromRemoteDataStore.Request, compleation: @escaping (MovieItem) -> Void) {
+	func search(request: MainModels.FetchMovieList.Request, compleation: @escaping (MovieItem) -> Void) {
 		self.networking.request(AppApi.search(keyword: request.movieTitle))
 			.map(MovieItem.self)
 			.subscribe(onSuccess: { items in

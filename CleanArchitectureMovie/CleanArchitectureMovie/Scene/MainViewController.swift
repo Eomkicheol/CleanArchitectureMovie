@@ -1,42 +1,41 @@
 //
-//  HomeViewController.swift
-//  Movie
+//  MainViewController.swift
+//  CleanArchitectureMovie
 //
-//  Created by 엄기철 on 2020/09/18.
+//  Created by 엄기철 on 2020/09/26.
 //  Copyright © 2020 ___ORGANIZATIONNAME___. All rights reserved.
 //
 
 import UIKit
 
-import SnapKit
-import Then
-
-protocol HomeDisplayLogic: class {
-	func displayFetchFromRemoteDataStore(with viewModel: HomeModels.FetchFromRemoteDataStore.ViewModel)
+protocol MainDisplayLogic: class {
+	func searchMovieTitle(with viewModel: MainModels.FetchMovieList.ViewModel)
 }
 
-class HomeViewController: BaseViewController, HomeDisplayLogic {
+class MainViewController: BaseViewController, MainDisplayLogic {
 
 	// MARK: - Properties
-
-	var viewModel: Models.FetchFromRemoteDataStore.ViewModel? {
+	
+	var viewModel: Models.FetchMovieList.ViewModel? {
 		didSet {
 			self.updateUI()
 		}
 	}
 
-	typealias Models = HomeModels
-	var router: (NSObjectProtocol & HomeRoutingLogic & HomeDataPassing)?
-	var interactor: HomeBusinessLogic?
+	typealias Models = MainModels
+	var router: (NSObjectProtocol & MainRoutingLogic & MainDataPassing)?
+	var interactor: MainBusinessLogic?
 
 	let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+
+	// MARK: - UIProperties
 
 	lazy var searchBar = UISearchBar().then {
 		$0.placeholder = "검색어를 입력해 주세요"
 		$0.searchBarStyle = .prominent
 		$0.autocorrectionType = .no
 		$0.autocapitalizationType = .none
-		$0.delegate = self
+
 	}
 
 	lazy var collectView = UICollectionView(frame: .zero, collectionViewLayout: self.flowLayout).then {
@@ -45,10 +44,9 @@ class HomeViewController: BaseViewController, HomeDisplayLogic {
 		$0.backgroundColor = .clear
 		$0.scrollIndicatorInsets = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
 		$0.keyboardDismissMode = .onDrag
-		$0.delegate = self
-		$0.dataSource = self
+
 		//cell
-		$0.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+		$0.register(MainMoviceCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
 	}
 
 	// MARK: - Object lifecycle
@@ -69,9 +67,9 @@ class HomeViewController: BaseViewController, HomeDisplayLogic {
 
 	private func setup() {
 		let viewController = self
-		let interactor = HomeInteractor()
-		let presenter = HomePresenter()
-		let router = HomeRouter()
+		let interactor = MainInteractor()
+		let presenter = MainPresenter()
+		let router = MainRouter()
 
 		viewController.router = router
 		viewController.interactor = interactor
@@ -85,7 +83,6 @@ class HomeViewController: BaseViewController, HomeDisplayLogic {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		view.backgroundColor = .white
 	}
 
 	override func configureUI() {
@@ -114,16 +111,13 @@ class HomeViewController: BaseViewController, HomeDisplayLogic {
 	}
 
 	func navigationSetting() {
-		navigationItem.title = "Home"
+		navigationItem.title = "영화검색"
 		navigationItem.largeTitleDisplayMode = .always
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationController?.hidesBarsOnSwipe = true
 	}
 
-
-	// MARK: - Use Case - Fetch From Remote DataStore
-
-	func displayFetchFromRemoteDataStore(with viewModel: HomeModels.FetchFromRemoteDataStore.ViewModel) {
+	func searchMovieTitle(with viewModel: MainModels.FetchMovieList.ViewModel) {
 		self.viewModel = viewModel
 	}
 
@@ -135,27 +129,25 @@ class HomeViewController: BaseViewController, HomeDisplayLogic {
 }
 
 
-extension HomeViewController: UICollectionViewDelegate { }
+extension MainViewController: UICollectionViewDelegate { }
 
 
-extension HomeViewController: UICollectionViewDataSource {
+extension MainViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return self.viewModel?.list.count ?? 0
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? MovieCollectionViewCell else { return UICollectionViewCell() }
-
+		guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? MainMoviceCollectionViewCell else { return UICollectionViewCell() }
 		cell.setEntity(value: self.viewModel?.list[indexPath.row] ?? Item())
-
 		return cell
 	}
 }
 
 
-extension HomeViewController: UICollectionViewDelegateFlowLayout {
+extension MainViewController: UICollectionViewDelegateFlowLayout {
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-		return MovieCollectionViewCell.cellHeight(width: collectionView.bounds.width)
+		return MainMoviceCollectionViewCell.cellHeight(width: collectionView.bounds.width)
 	}
 
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -172,11 +164,10 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
 }
 
 
-extension HomeViewController: UISearchBarDelegate {
+extension MainViewController: UISearchBarDelegate {
 
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-		let request = HomeModels.FetchFromRemoteDataStore.Request(movieTitle: searchBar.text ?? "")
-		interactor?.displaySearch(with: request)
+		let request = MainModels.FetchMovieList.Request(movieTitle: searchBar.text ?? "")
+		self.interactor?.displaySearch(with: request)
 	}
-
 }

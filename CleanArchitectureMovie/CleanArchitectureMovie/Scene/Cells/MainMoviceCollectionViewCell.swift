@@ -1,16 +1,19 @@
 //
-//  MovieCollectionViewCell.swift
-//  Movie
+//  MainMoviceCollectionViewCell.swift
+//  CleanArchitectureMovie
 //
-//  Created by 엄기철 on 2020/09/18.
+//  Created by 엄기철 on 2020/09/26.
 //
+
+import Foundation
 
 import UIKit
 
 import Kingfisher
 import Then
+import SnapKit
 
-class MovieCollectionViewCell: BaseCollectionViewCell {
+class MainMoviceCollectionViewCell: BaseCollectionViewCell {
 
 	// MARK: Constants
 	private enum Constants {
@@ -139,3 +142,4 @@ extension String {
 		return self.replacingOccurrences(of: "|", with: ",", options: [.literal], range: nil)
 	}
 }
+
