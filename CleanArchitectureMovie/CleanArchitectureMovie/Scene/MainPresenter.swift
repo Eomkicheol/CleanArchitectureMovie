@@ -13,11 +13,13 @@ protocol MainPresentationLogic {
 }
 
 class MainPresenter: MainPresentationLogic {
-	// MARK: - Properties
 
 	typealias Models = MainModels
+
+	// MARK: - Properties
 	weak var viewController: MainDisplayLogic?
 
+	//MARK: - Methods
 	func searchDisplyMovieList(with response: MainModels.FetchMovieList.Response) {
 		let viewModel = Models.FetchMovieList.ViewModel(list: response.response?.items ?? [])
 		viewController?.searchMovieTitle(with: viewModel)

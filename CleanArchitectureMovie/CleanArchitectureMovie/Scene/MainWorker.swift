@@ -12,33 +12,29 @@ import RxCocoa
 import RxSwift
 
 protocol MainWorkerNetworking {
-	func search(request: MainModels.FetchMovieList.Request, compleation: @escaping (MovieItem) -> Void)
+	func search(request: MainModels.FetchMovieList.Request, compleation: @escaping (MovieItem) -> Void) -> Disposable
 }
 
 class MainWorker: MainWorkerNetworking {
 
-	// MARK: - Properties
-
 	typealias Models = MainModels
 
-	let disposeBag = DisposeBag()
+	// MARK: - Properties
+	let movieService: MainUseCaseProtocol
 
-	private let networking: NetworkingProtocol
-
-	init(networking: NetworkingProtocol) {
-		self.networking = networking
+	init(movieService: MainUseCaseProtocol) {
+		self.movieService = movieService
 	}
 
 	// MARK: - Methods
+	func search(request: MainModels.FetchMovieList.Request, compleation: @escaping (MovieItem) -> Void) -> Disposable {
 
-	func search(request: MainModels.FetchMovieList.Request, compleation: @escaping (MovieItem) -> Void) {
-		self.networking.request(AppApi.search(keyword: request.movieTitle))
+		self.movieService.searchMovieList(movieTitle: request.movieTitle)
 			.map(MovieItem.self)
 			.subscribe(onSuccess: { items in
 				compleation(items)
 			}, onError: { _ in
 				print("에러!!!!!!!")
 			})
-			.disposed(by: self.disposeBag)
 	}
 }

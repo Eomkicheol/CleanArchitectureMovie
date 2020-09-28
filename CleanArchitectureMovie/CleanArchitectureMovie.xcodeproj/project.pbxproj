@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5FB4ADAD252194C9001B24BE /* MainUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB4ADAC252194C9001B24BE /* MainUseCase.swift */; };
+		5FB4ADB025219595001B24BE /* MainRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB4ADAF25219595001B24BE /* MainRepository.swift */; };
+		5FB4ADF62521A132001B24BE /* MainBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB4ADF52521A132001B24BE /* MainBuilder.swift */; };
 		5FD707E4251E284000285FDD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FD707E3251E284000285FDD /* AppDelegate.swift */; };
 		5FD707E6251E284000285FDD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FD707E5251E284000285FDD /* SceneDelegate.swift */; };
 		5FD707ED251E284100285FDD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5FD707EC251E284100285FDD /* Assets.xcassets */; };
@@ -30,6 +33,9 @@
 
 /* Begin PBXFileReference section */
 		2AF6A452858C97914B8D2EFE /* Pods_CleanArchitectureMovie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CleanArchitectureMovie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FB4ADAC252194C9001B24BE /* MainUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUseCase.swift; sourceTree = "<group>"; };
+		5FB4ADAF25219595001B24BE /* MainRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRepository.swift; sourceTree = "<group>"; };
+		5FB4ADF52521A132001B24BE /* MainBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBuilder.swift; sourceTree = "<group>"; };
 		5FD707E0251E284000285FDD /* CleanArchitectureMovie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanArchitectureMovie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FD707E3251E284000285FDD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5FD707E5251E284000285FDD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -72,6 +78,22 @@
 				2AF6A452858C97914B8D2EFE /* Pods_CleanArchitectureMovie.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5FB4ADAA25219445001B24BE /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				5FB4ADAC252194C9001B24BE /* MainUseCase.swift */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
+		5FB4ADAB25219451001B24BE /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				5FB4ADAF25219595001B24BE /* MainRepository.swift */,
+			);
+			name = Repository;
 			sourceTree = "<group>";
 		};
 		5FD707D7251E284000285FDD = {
@@ -155,6 +177,8 @@
 		5FD70833251F6C6200285FDD /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				5FB4ADAB25219451001B24BE /* Repository */,
+				5FB4ADAA25219445001B24BE /* UseCase */,
 				5FD70834251F6C7300285FDD /* Main */,
 			);
 			path = Scene;
@@ -163,6 +187,7 @@
 		5FD70834251F6C7300285FDD /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				5FB4ADF52521A132001B24BE /* MainBuilder.swift */,
 				5FD70805251E289D00285FDD /* Cells */,
 				5FD70835251F6C8700285FDD /* MainPresenter.swift */,
 				5FD70836251F6C8700285FDD /* MainWorker.swift */,
@@ -302,6 +327,8 @@
 				5FD7083C251F6C8700285FDD /* MainWorker.swift in Sources */,
 				5FD707E4251E284000285FDD /* AppDelegate.swift in Sources */,
 				5FD70813251E289D00285FDD /* BaseCollectionViewCell.swift in Sources */,
+				5FB4ADB025219595001B24BE /* MainRepository.swift in Sources */,
+				5FB4ADF62521A132001B24BE /* MainBuilder.swift in Sources */,
 				5FD7080E251E289D00285FDD /* NetworkingProtocol.swift in Sources */,
 				5FD70810251E289D00285FDD /* AppAPI.swift in Sources */,
 				5FD7080F251E289D00285FDD /* AccessTokenPlugin.swift in Sources */,
@@ -310,6 +337,7 @@
 				5FD7080D251E289D00285FDD /* Logger.swift in Sources */,
 				5FD70852251F75C900285FDD /* MainMoviceCollectionViewCell.swift in Sources */,
 				5FD70840251F6C8700285FDD /* MainInteractor.swift in Sources */,
+				5FB4ADAD252194C9001B24BE /* MainUseCase.swift in Sources */,
 				5FD707E6251E284000285FDD /* SceneDelegate.swift in Sources */,
 				5FD7083D251F6C8700285FDD /* MainRouter.swift in Sources */,
 			);

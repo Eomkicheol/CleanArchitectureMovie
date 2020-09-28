@@ -8,6 +8,9 @@
 
 import UIKit
 
+import RxSwift
+import RxCocoa
+
 protocol MainBusinessLogic {
 	func displaySearch(with request: MainModels.FetchMovieList.Request)
 }
@@ -16,17 +19,23 @@ protocol MainDataStore { }
 
 class MainInteractor: MainBusinessLogic, MainDataStore {
 
-	// MARK: - Properties
-
 	typealias Models = MainModels
 
-	lazy var worker = MainWorker(networking: Networking())
+	// MARK: - Properties
+	var disposeBag: DisposeBag = DisposeBag()
+
 	var presenter: MainPresentationLogic?
 
+	let worker: MainWorker
+
+	init(worker: MainWorker) {
+		self.worker = worker
+	}
+
 	func displaySearch(with request: MainModels.FetchMovieList.Request) {
-		worker.search(request: request, compleation: { items in
+		_ = worker.search(request: request, compleation: { items in
 			let viewModel = Models.FetchMovieList.Response(request: request, response: items)
 			self.presenter?.searchDisplyMovieList(with: viewModel)
-		})
+		}).disposed(by: self.disposeBag)
 	}
 }

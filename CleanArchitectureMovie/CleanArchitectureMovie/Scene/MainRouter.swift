@@ -19,12 +19,10 @@ protocol MainDataPassing {
 class MainRouter: NSObject, MainRoutingLogic, MainDataPassing {
 
     // MARK: - Properties
-
     weak var viewController: MainViewController?
     var dataStore: MainDataStore?
 
     // MARK: - Routing
-
     func routeToNext() {
         // let destinationVC = UIStoryboard(name: "", bundle: nil).instantiateViewController(withIdentifier: "") as! NextViewController
         // var destinationDS = destinationVC.router!.dataStore!
@@ -33,7 +31,6 @@ class MainRouter: NSObject, MainRoutingLogic, MainDataPassing {
     }
 
     // MARK: - Data Passing
-
     // func passDataTo(_ destinationDS: inout NextDataStore, from sourceDS: MainDataStore) {
     //     destinationDS.attribute = sourceDS.attribute
     // }

@@ -10,6 +10,10 @@ import UIKit
 
 protocol MainDisplayLogic: class {
 	func searchMovieTitle(with viewModel: MainModels.FetchMovieList.ViewModel)
+
+	var presenter: MainPresentationLogic? { get set }
+	var interactor: MainBusinessLogic? { get set }
+	var router: (NSObjectProtocol & MainRoutingLogic & MainDataPassing)? { get set }
 }
 
 class MainViewController: BaseViewController, MainDisplayLogic {
@@ -23,10 +27,14 @@ class MainViewController: BaseViewController, MainDisplayLogic {
 	}
 
 	typealias Models = MainModels
+
 	var router: (NSObjectProtocol & MainRoutingLogic & MainDataPassing)?
 	var interactor: MainBusinessLogic?
+	var presenter: MainPresentationLogic?
+
 
 	let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+
 
 	// MARK: - UIProperties
 
@@ -55,39 +63,26 @@ class MainViewController: BaseViewController, MainDisplayLogic {
 
 	override init() {
 		super.init()
-		defer {
-			setup()
-		}
-	}
-
-	required init?(coder aDecoder: NSCoder) {
-		super.init(coder: aDecoder)
 		setup()
 	}
 
-	// MARK: - Setup
 
-	private func setup() {
-		let viewController = self
-		let interactor = MainInteractor()
-		let presenter = MainPresenter()
-		let router = MainRouter()
-
-		viewController.router = router
-		viewController.interactor = interactor
-		interactor.presenter = presenter
-		presenter.viewController = viewController
-		router.viewController = viewController
-		router.dataStore = interactor
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		setup()
 	}
 
-	// MARK: - View Lifecycle
 
+	// MARK: - Setup
+	private func setup() { }
+
+	// MARK: - View Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		self.view.backgroundColor = .white
 	}
 
+	// MARK: - configureUI
 	override func configureUI() {
 		super.configureUI()
 
@@ -99,6 +94,7 @@ class MainViewController: BaseViewController, MainDisplayLogic {
 		}
 	}
 
+	// MARK: - setupConstraints
 	override func setupConstraints() {
 		super.setupConstraints()
 
@@ -134,7 +130,6 @@ class MainViewController: BaseViewController, MainDisplayLogic {
 
 extension MainViewController: UICollectionViewDelegate { }
 
-
 extension MainViewController: UICollectionViewDataSource {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return self.viewModel?.list.count ?? 0
@@ -168,7 +163,6 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 
 
 extension MainViewController: UISearchBarDelegate {
-
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		let request = MainModels.FetchMovieList.Request(movieTitle: searchBar.text ?? "")
 		self.interactor?.displaySearch(with: request)
