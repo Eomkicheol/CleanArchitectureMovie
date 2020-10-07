@@ -19,6 +19,7 @@ class BaseViewController: UIViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
 
+
 	override func viewDidLoad() {
 		self.view.backgroundColor = .systemBackground
 		self.view.setNeedsUpdateConstraints()
