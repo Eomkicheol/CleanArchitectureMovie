@@ -11,11 +11,15 @@ import Moya
 import RxSwift
 import RxCocoa
 
-protocol MainRepositoryProtocol: class {
+protocol MainRemoteRepositoryProtocol: class {
 	func searchMovieList(movieTitle: String) -> Single<Response>
 }
 
-class MainRepository: MainRepositoryProtocol {
+protocol MainLocalRepositoryProtocol  {}
+
+protocol MainRepositoryProtocol: MainRemoteRepositoryProtocol, MainLocalRepositoryProtocol {}
+
+final class MainRepository: MainRepositoryProtocol {
 
 	let network: NetworkingProtocol
 

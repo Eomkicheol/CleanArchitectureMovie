@@ -16,7 +16,7 @@ protocol MainDataPassing {
     var dataStore: MainDataStore? { get }
 }
 
-class MainRouter: NSObject, MainRoutingLogic, MainDataPassing {
+final class MainRouter: MainRoutingLogic, MainDataPassing {
 
     // MARK: - Properties
     weak var viewController: MainViewController?

@@ -22,8 +22,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 		self.window?.rootViewController = UINavigationController(rootViewController: rootView)
 		self.window?.backgroundColor = .white
-
-		MainBuilder.buildModule(viewController: rootView)
 	}
 }
 

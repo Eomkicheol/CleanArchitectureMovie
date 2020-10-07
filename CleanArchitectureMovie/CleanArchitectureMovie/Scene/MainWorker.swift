@@ -15,14 +15,12 @@ protocol MainWorkerNetworking {
 	func search(request: MainModels.FetchMovieList.Request, compleation: @escaping (MovieItem) -> Void) -> Disposable
 }
 
-class MainWorker: MainWorkerNetworking {
-
-	typealias Models = MainModels
+final class MainWorker: MainWorkerNetworking {
 
 	// MARK: - Properties
-	let movieService: MainUseCaseProtocol
+	let movieService: MainRemoteRepositoryProtocol
 
-	init(movieService: MainUseCaseProtocol) {
+	init(movieService: MainRemoteRepositoryProtocol) {
 		self.movieService = movieService
 	}
 

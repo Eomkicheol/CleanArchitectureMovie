@@ -17,7 +17,7 @@ enum MainModels {
 		}
 
 		struct Response {
-			var request: Request
+			var movieTitle: String
 			var response: MovieItem?
 		}
 

@@ -12,30 +12,31 @@ import RxSwift
 import RxCocoa
 
 protocol MainBusinessLogic {
-	func displaySearch(with request: MainModels.FetchMovieList.Request)
+	func search(request: MainModels.FetchMovieList.Request)
 }
 
 protocol MainDataStore { }
 
-class MainInteractor: MainBusinessLogic, MainDataStore {
+final class MainInteractor: MainBusinessLogic, MainDataStore {
 
 	typealias Models = MainModels
 
 	// MARK: - Properties
-	var disposeBag: DisposeBag = DisposeBag()
+	private var disposeBag: DisposeBag = DisposeBag()
 
 	var presenter: MainPresentationLogic?
 
-	let worker: MainWorker
+	private let worker: MainWorker
 
 	init(worker: MainWorker) {
 		self.worker = worker
 	}
 
-	func displaySearch(with request: MainModels.FetchMovieList.Request) {
-		_ = worker.search(request: request, compleation: { items in
-			let viewModel = Models.FetchMovieList.Response(request: request, response: items)
-			self.presenter?.searchDisplyMovieList(with: viewModel)
+	func search(request: MainModels.FetchMovieList.Request) {
+		_ = worker.search(request: request, compleation: { [weak self] items in
+			guard let self = self else { return }
+			let viewModel = Models.FetchMovieList.Response(movieTitle: request.movieTitle, response: items)
+			self.presenter?.presentSearchDisplyMovieList(response: viewModel)
 		}).disposed(by: self.disposeBag)
 	}
 }

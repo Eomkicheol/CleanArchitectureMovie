@@ -9,19 +9,17 @@
 import UIKit
 
 protocol MainPresentationLogic {
-	func searchDisplyMovieList(with response: MainModels.FetchMovieList.Response)
+	func presentSearchDisplyMovieList(response: MainModels.FetchMovieList.Response)
 }
 
-class MainPresenter: MainPresentationLogic {
-
-	typealias Models = MainModels
+final class MainPresenter: MainPresentationLogic {
 
 	// MARK: - Properties
 	weak var viewController: MainDisplayLogic?
 
 	//MARK: - Methods
-	func searchDisplyMovieList(with response: MainModels.FetchMovieList.Response) {
-		let viewModel = Models.FetchMovieList.ViewModel(list: response.response?.items ?? [])
-		viewController?.searchMovieTitle(with: viewModel)
+	func presentSearchDisplyMovieList(response: MainModels.FetchMovieList.Response) {
+		let viewModel = MainModels.FetchMovieList.ViewModel(list: response.response?.items ?? [])
+		viewController?.searchMovieTitle(viewModel: viewModel)
 	}
 }

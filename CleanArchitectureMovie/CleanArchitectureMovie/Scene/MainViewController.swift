@@ -9,29 +9,21 @@
 import UIKit
 
 protocol MainDisplayLogic: class {
-	func searchMovieTitle(with viewModel: MainModels.FetchMovieList.ViewModel)
-
-	var presenter: MainPresentationLogic? { get set }
-	var interactor: MainBusinessLogic? { get set }
-	var router: (NSObjectProtocol & MainRoutingLogic & MainDataPassing)? { get set }
+	func searchMovieTitle(viewModel: MainModels.FetchMovieList.ViewModel)
 }
 
-class MainViewController: BaseViewController, MainDisplayLogic {
+final class MainViewController: BaseViewController, MainDisplayLogic {
 
 	// MARK: - Properties
 
-	var viewModel: Models.FetchMovieList.ViewModel? {
+	var viewModel: MainModels.FetchMovieList.ViewModel? {
 		didSet {
 			self.updateUI()
 		}
 	}
 
-	typealias Models = MainModels
-
-	var router: (NSObjectProtocol & MainRoutingLogic & MainDataPassing)?
+	var router: (MainRoutingLogic & MainDataPassing)?
 	var interactor: MainBusinessLogic?
-	var presenter: MainPresentationLogic?
-
 
 	let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
 
@@ -74,7 +66,21 @@ class MainViewController: BaseViewController, MainDisplayLogic {
 
 
 	// MARK: - Setup
-	private func setup() { }
+	private func setup() {
+		let viewController = self
+		let repository = MainRepository()
+		let worker = MainWorker(movieService: repository)
+		let interactor = MainInteractor(worker: worker)
+		let presenter = MainPresenter()
+		let router = MainRouter()
+
+		viewController.router = router
+		viewController.interactor = interactor
+		interactor.presenter = presenter
+		presenter.viewController = viewController
+		router.viewController = viewController
+		router.dataStore = interactor
+	}
 
 	// MARK: - View Lifecycle
 	override func viewDidLoad() {
@@ -116,7 +122,7 @@ class MainViewController: BaseViewController, MainDisplayLogic {
 		navigationController?.hidesBarsOnSwipe = true
 	}
 
-	func searchMovieTitle(with viewModel: MainModels.FetchMovieList.ViewModel) {
+	func searchMovieTitle(viewModel: MainModels.FetchMovieList.ViewModel) {
 		self.viewModel = viewModel
 	}
 
@@ -165,6 +171,6 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 extension MainViewController: UISearchBarDelegate {
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		let request = MainModels.FetchMovieList.Request(movieTitle: searchBar.text ?? "")
-		self.interactor?.displaySearch(with: request)
+		self.interactor?.search(request: request)
 	}
 }
